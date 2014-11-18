@@ -6,11 +6,12 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/18 12:04:18 by rbaum             #+#    #+#             */
-/*   Updated: 2014/11/18 14:27:42 by rbaum            ###   ########.fr       */
+/*   Updated: 2014/11/18 16:33:24 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "get_next_line.h"
+#include <fcntl.h>
 // GNL de remi
 
 static char     *ft_read_line(char *str, char c)
