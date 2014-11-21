@@ -6,12 +6,11 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/19 19:45:13 by rbaum             #+#    #+#             */
-/*   Updated: 2014/11/19 19:45:14 by rbaum            ###   ########.fr       */
+/*   Updated: 2014/11/21 12:14:54 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <fcntl.h>
 
 static char		*ft_line(char *s)
 {
@@ -46,29 +45,29 @@ static char		*ft_stock(char *s)
 
 int				get_next_line(int const fd, char **line)
 {
-	int			i;
 	int			ret;
+	char		*temp;
 	static char	*save;
 	char		*buff;
 
-	i = 0;
 	buff = ft_strnew(BUFF_SIZE + 1);
-	if (save == NULL)
-		save = ft_strnew(1);
+	save = (save == NULL) ? ft_strnew(1) : save;
 	if (buff == NULL || BUFF_SIZE <= 0 || line == NULL)
 		return (-1);
 	ret = 42;
 	while ((ft_strchr(save, '\n') == NULL) && ret > 0)
 	{
-		ret = read(fd, buff, BUFF_SIZE);
-		if (ret == -1)
+		if ((ret = read(fd, buff, BUFF_SIZE)) == -1)
 			return (-1);
+		temp = save;
 		save = ft_strjoin(save, buff);
+		ft_strdel(&temp);
 		buff[ret] = '\0';
 	}
+	ft_strdel(&buff);
+	*line = ft_line(save);
 	if (ret == 0)
 		return (0);
-	*line = ft_line(save);
 	save = ft_stock(save);
 	return (1);
 }
