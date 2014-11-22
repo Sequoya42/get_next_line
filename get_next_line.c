@@ -6,11 +6,12 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/19 19:45:13 by rbaum             #+#    #+#             */
-/*   Updated: 2014/11/21 12:14:54 by rbaum            ###   ########.fr       */
+/*   Updated: 2014/11/22 12:44:34 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <fcntl.h>
 
 static char		*ft_line(char *s)
 {
@@ -43,6 +44,14 @@ static char		*ft_stock(char *s)
 	return (str);
 }
 
+void			ft_norme(char **buff, char **line, char **save, int ret)
+{
+	ft_strdel(buff);
+	*line = ft_line(*save);
+	if (ret == 0)
+		ft_strdel(save);
+}
+
 int				get_next_line(int const fd, char **line)
 {
 	int			ret;
@@ -64,10 +73,27 @@ int				get_next_line(int const fd, char **line)
 		ft_strdel(&temp);
 		buff[ret] = '\0';
 	}
-	ft_strdel(&buff);
-	*line = ft_line(save);
+	ft_norme(&buff, line, &save, ret);
 	if (ret == 0)
 		return (0);
 	save = ft_stock(save);
 	return (1);
+}
+
+int		main(int argc, char **argv)
+{
+	int		fd;
+	int		ret;
+	char	*line;
+
+	(void)argc;
+	(void)argv;
+//	fd = open(argv[1], O_RDONLY);
+	fd = 0;
+	while ((ret = get_next_line(fd, &line)) > 0)
+	{
+		write(1, line, ft_strlen(line));
+		write(1, "\n", 1);
+	}
+	return (0);
 }
